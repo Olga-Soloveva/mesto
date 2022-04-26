@@ -1,0 +1,18 @@
+.edit-button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 0;
+  cursor: pointer;
+  background-image: url(../../images/edit-button.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 10px 10px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.edit-button:hover {
+  opacity: 0.6;
+}

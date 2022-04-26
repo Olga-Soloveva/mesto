@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="author" content="Ольга Соловьева" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Mesto</title>
+  </head>
+  <body class="page">
+    <header class="header">
+      <img class="header__logo" src="./images/logo.svg" alt="Логотип Mesto" />
+    </header>
+    <main class="content">
+      <section class="profile">
+        <div class="profile__item">
+          <img class="profile__avatar" src="./images/avatar.jpg" alt="Аватар" />
+          <div class="profile__profile-info">
+            <div class="profile__person">
+              <h1 class="profile__person-name">Жак-Ив Кусто</h1>
+              <button type="button" class="edit-button"></button>
+            </div>
+            <p class="profile__description">Исследователь океана</p>
+          </div>
+        </div>
+        <button type="button" class="add-button"></button>
+      </section>
+    </main>
+    <footer class="footer">
+      <div style="background-color: aqua; width: 100%; height: 30px;"></div>
 
-</body>
+    </footer>
+  </body>
 </html>

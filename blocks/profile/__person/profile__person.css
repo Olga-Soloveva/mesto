@@ -1,0 +1,8 @@
+.profile__person {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 18px;
+  padding-bottom: 16px;
+}
