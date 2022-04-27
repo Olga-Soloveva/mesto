@@ -4,3 +4,15 @@
   border-bottom: 1px solid rgba(84, 84, 84, .7);
   padding: 0 0 41px;
 }
+
+@media screen and (max-width: 950px) {
+  .header {
+    padding: 0 0 36px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .header {
+    padding: 0 0 32px;
+  }
+}

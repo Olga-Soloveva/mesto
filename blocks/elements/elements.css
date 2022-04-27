@@ -7,25 +7,14 @@
   column-gap: 17px;
 }
 
-/* @media screen and (max-width: 1150px) {
-  .photo-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .photo-grid {
-    padding: 0 24px;
+@media screen and (max-width: 950px) {
+  .elements {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
   }
 }
 
-@media screen and (max-width: 550px) {
-  .photo-grid {
-    padding: 0 16px;
+@media screen and (max-width: 650px) {
+  .elements {
     grid-template-columns: 1fr;
-    gap: 12px;
   }
-} */
+}

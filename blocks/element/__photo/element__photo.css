@@ -1,7 +1,5 @@
 .element__photo {
-  width: 282px;
-  height: 282px;
+  width: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-  border-radius: 10px 10px 0 0;
 }

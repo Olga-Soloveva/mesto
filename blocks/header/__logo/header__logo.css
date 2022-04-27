@@ -4,3 +4,17 @@
   object-fit: contain;
   object-position: left;
 }
+
+@media screen and (max-width: 950px) {
+  .header__logo {
+    width: 124px;
+    height: 29px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .header__logo {
+    width: 104px;
+    height: 24px;
+  }
+}

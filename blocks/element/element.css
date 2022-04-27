@@ -1,6 +1,7 @@
 .element {
   font-size: 0;
-  width: 100%;
+  max-width: 100%;
+  min-width: 282px;
   margin: 0;
   box-sizing: border-box;
 }
