@@ -15,3 +15,27 @@
 .edit-button:hover {
   opacity: 0.6;
 }
+
+@media screen and (max-width: 950px) {
+  .edit-button {
+    width: 22px;
+    height: 22px;
+    background-size: 9px 9px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .edit-button {
+    width: 20px;
+    height: 20px;
+    background-size: 8px 8px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .edit-button {
+    width: 18px;
+    height: 18px;
+    background-size: 8px 8px;
+  }
+}

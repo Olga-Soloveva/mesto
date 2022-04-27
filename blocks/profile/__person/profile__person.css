@@ -6,3 +6,14 @@
   gap: 18px;
   padding-bottom: 16px;
 }
+
+@media screen and (max-width: 650px) {
+  .profile__person {
+    gap: 10px;
+    padding-bottom: 14px;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0 -20px 0 0 ;
+    padding-bottom: 14px;
+  }
+}

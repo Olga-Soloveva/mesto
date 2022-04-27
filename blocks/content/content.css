@@ -7,13 +7,13 @@
 
 @media screen and (max-width: 950px) {
   .content {
-    padding: 40px 0 55px;
+    padding: 40px 19px 55px;
   }
 }
 
 @media screen and (max-width: 650px) {
   .content {
-    padding: 42px 0 48px;
+    padding: 42px 19px 48px;
   }
 }
 

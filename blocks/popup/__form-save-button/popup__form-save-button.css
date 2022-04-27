@@ -1,0 +1,25 @@
+.popup__form-save-button {
+  background-color: #000;
+  border: 0;
+  height: 50px;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
+  color: #fff;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+
+.popup__form-save-button :hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 650px) {
+  .popup__form-save-button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
