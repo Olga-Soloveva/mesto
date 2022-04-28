@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -113,16 +113,33 @@
     <footer class="footer">
       <p class="footer__copyright">© 2022 Mesto Russia</p>
     </footer>
-    <div class="popup popup_opened">
+    <div class="popup">
       <div class="popup__container">
         <button type="button" class="popup__close"></button>
         <h2 class="popup__heading">Редактировать профиль</h2>
         <form class="popup__form">
-          <input class="popup__form-item popup__form-item_el_name" type="text" id="name" name="name" placeholder="Имя">
-          <input class="popup__form-item popup__form-item_el_description" type="text" id="description" name="description" placeholder="О себе">
-          <button type="submit" class="popup__form-save-button">Сохранить</button>
+          <input
+            class="popup__form-item popup__form-item_el_name"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Имя"
+            value="Жак-Ив Кусто"
+          />
+          <input
+            class="popup__form-item popup__form-item_el_description"
+            type="text"
+            id="description"
+            name="description"
+            placeholder="О себе"
+            value="Исследователь океана"
+          />
+          <button type="submit" class="popup__form-save-button">
+            Сохранить
+          </button>
         </form>
       </div>
     </div>
+    <script src="./scripts/index.js"></script>
   </body>
 </html>
