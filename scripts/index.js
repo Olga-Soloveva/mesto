@@ -1,13 +1,12 @@
 let popup = document.querySelector('.popup');
-
-function togglePopup() {
-  popup.classList.toggle('popup_opened');
-}
-
 let formName = document.querySelector('.popup__form-item_el_name');
 let formDescription = document.querySelector('.popup__form-item_el_description');
 let profilePersonName = document.querySelector('.profile__person-name');
 let profileDescription = document.querySelector('.profile__description');
+
+function togglePopup() {
+  popup.classList.toggle('popup_opened');
+}
 
 function openForm() {
   formName.value = profilePersonName.textContent;
