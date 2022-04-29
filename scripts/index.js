@@ -27,5 +27,5 @@ popupClose.addEventListener('click', togglePopup);
 let editButton = document.querySelector('.edit-button');
 editButton.addEventListener('click', openForm);
 
-let popupForm = document.querySelector('.popup__form')
+let popupForm = document.querySelector('.popup__form');
 popupForm.addEventListener('submit', formSubmitHandler);
