@@ -10,16 +10,16 @@ let profilePersonName = document.querySelector('.profile__person-name');
 let profileDescription = document.querySelector('.profile__description');
 
 function openForm() {
-  formName.value = profilePersonName.textContent
-  formDescription.value =  profileDescription.textContent
-  togglePopup()
+  formName.value = profilePersonName.textContent;
+  formDescription.value =  profileDescription.textContent;
+  togglePopup();
 }
 
 function formSubmitHandler (evt) {
   evt.preventDefault();
   profilePersonName.textContent = formName.value;
   profileDescription.textContent = formDescription.value;
-  togglePopup()
+  togglePopup();
 }
 
 let popupClose = document.querySelector('.popup__close');
