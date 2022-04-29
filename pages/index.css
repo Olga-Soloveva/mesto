@@ -1,6 +1,6 @@
 @import url(../vendor/normalize.css);
 
-@import url(../vendor/fonts/fonts.css);
+@import url(../vendor/fonts.css);
 
 @import url(../blocks/page/page.css);
 
@@ -26,7 +26,7 @@
 @import url(../blocks/element/__photo-container/element__photo-container.css);
 
 @import url(../blocks/footer/footer.css);
-@import url(../blocks/footer/__copyrigt/footer__copyright.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
 
 @import url(../blocks/add-button/add-button.css);
 @import url(../blocks/edit-button/edit-button.css);

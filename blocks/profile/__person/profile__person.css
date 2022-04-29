@@ -4,15 +4,15 @@
   flex-wrap: nowrap;
   align-items: baseline;
   gap: 18px;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
 
 @media screen and (max-width: 650px) {
   .profile__person {
     gap: 10px;
-    padding-bottom: 14px;
     justify-content: center;
     align-items: baseline;
-    margin: 0 -20px 0 0;
+    padding-bottom: 7px;
+    margin: 0 -26px 0 0;
   }
 }
