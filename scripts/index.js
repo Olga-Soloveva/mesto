@@ -28,6 +28,17 @@ const initialCards = [
 const itemCardsWrapper = document.querySelector('.elements');
 const template = document.querySelector('#template-photo');
 
+itemCardsWrapper.addEventListener('click', evt => {
+  console.log(evt.target)
+  if (evt.target.classList.contains('delete-button')) {
+    handleDeleteItem(evt);
+  } else if (evt.target.classList.contains('like-button')) {
+    handleLikeItem(evt);
+  } else if (evt.target.classList.contains('element__photo')) {
+    handleViewPhoto(evt);
+  }
+})
+
 //Функции карточек (лайк и удалить карточку)
 
 const handleLikeItem = evt => {
@@ -62,15 +73,8 @@ const getItemElement = card => {
   const newItemPhoto = newItemElement.querySelector('.element__photo');
   newItemPhoto.src = card.link;
   newItemPhoto.alt = `Фото ${card.name}`;
-  newItemPhoto.addEventListener('click', handleViewPhoto)
-
   const newItemPlaceName = newItemElement.querySelector('.element__place-name');
   newItemPlaceName.textContent = card.name;
-  const newItemLikeButton = newItemElement.querySelector('.like-button');
-  newItemLikeButton.addEventListener('click', handleLikeItem)
-  const newDeleteButton = newItemElement.querySelector('.delete-button')
-  newDeleteButton.addEventListener('click', handleDeleteItem)
-
   return newItemElement;
 }
 
@@ -119,12 +123,12 @@ editButton.addEventListener('click', evt => {
 });
 
 
-const popupFormEditProfile = document.querySelector('.popup_type_edit-profile .popup__form')
+const popupFormEditProfile = document.querySelector('.popup_type_edit-profile .popup__form');
 popupFormEditProfile.addEventListener('submit', evt => {
   evt.preventDefault();
   profilePersonName.textContent = formPersonName.value;
   profileDescription.textContent = formDescription.value;
-  closePopup(evt)
+  closePopup(evt);
 });
 
 
@@ -142,13 +146,15 @@ addButton.addEventListener('click', evt => {
   openForm(popupAddCard);
 });
 
-const popupFormAddCard = document.querySelector('.popup_type_add-card .popup__form')
+const popupFormAddCard = document.querySelector('.popup_type_add-card .popup__form');
 popupFormAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
-  renderItemPrepend(itemCardsWrapper, ({name: formPlaceName.value, link: formLink.value}));
+  if (formPlaceName.value && formLink.value) {
+    renderItemPrepend(itemCardsWrapper, ({name: formPlaceName.value, link: formLink.value}));
+  }
   formPlaceName.value = '';
   formLink.value = '';
-  closePopup(evt)
+  closePopup(evt);
 });
 
 
