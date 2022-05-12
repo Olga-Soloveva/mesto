@@ -37,12 +37,15 @@
           aria-label="Добавить фотокарточку"
         ></button>
       </section>
-      <section class="elements" aria-label="Секция с фотокарточками">
- 
-      </section>
+      <section class="elements" aria-label="Секция с фотокарточками"></section>
       <template id="template-photo">
         <article class="element" aria-label="Фотокарточка">
           <div class="element__photo-container">
+            <button
+              type="button"
+              class="delete-button"
+              aria-label="Удалить фотокарточку"
+            ></button>
             <img class="element__photo" />
           </div>
           <div class="element__description">
@@ -59,7 +62,7 @@
     <footer class="footer">
       <p class="footer__copyright">© 2022 Mesto Russia</p>
     </footer>
-    <div class="popup popup-edit-profile">
+    <div class="popup popup_type_edit-profile">
       <div class="popup__container">
         <button
           type="button"
@@ -94,7 +97,7 @@
         </form>
       </div>
     </div>
-    <div class="popup popup-add-card">
+    <div class="popup popup_type_add-card">
       <div class="popup__container">
         <button
           type="button"
@@ -127,6 +130,17 @@
             Создать
           </button>
         </form>
+      </div>
+    </div>
+    <div class="popup popup_type_open-card">
+      <div class="popup__container-card">
+        <button
+          type="button"
+          class="popup__close"
+          aria-label="Закрыть фотокарточку"
+        ></button>
+        <img class="popup__card" src="#" />
+        <p class="popup__card-name"></p>
       </div>
     </div>
     <script src="./scripts/index.js"></script>

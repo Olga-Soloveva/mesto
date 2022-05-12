@@ -28,19 +28,49 @@ const initialCards = [
 const itemCardsWrapper = document.querySelector('.elements');
 const template = document.querySelector('#template-photo');
 
+//Функции карточек (лайк и удалить карточку)
+
 const handleLikeItem = evt => {
   evt.target.classList.toggle('like-button_active');
 }
+
+const handleDeleteItem = evt => {
+  const deleteCard = evt.target.closest('.element');
+  deleteCard.remove();
+}
+
+// Посмотреть фотографию на полный экран
+
+const popupViewCard = document.querySelector('.popup_type_open-card');
+
+const handleViewPhoto = evt => {
+  openForm(popupViewCard);
+  const popupImg = popupViewCard.querySelector('.popup__card')
+  popupImg.src = evt.target.src
+  const popupImgName = popupViewCard.querySelector('.popup__card-name')
+  const cardElement = evt.target.closest('.element');
+  const cardPlaceName = cardElement.querySelector('.element__place-name')
+  popupImgName.textContent = cardPlaceName.textContent
+
+}
+
+// Рендер массива в карточки
+
 
 const getItemElement = card => {
   const newItemElement = template.content.cloneNode(true);
   const newItemPhoto = newItemElement.querySelector('.element__photo');
   newItemPhoto.src = card.link;
   newItemPhoto.alt = `Фото ${card.name}`;
+  newItemPhoto.addEventListener('click', handleViewPhoto)
+
   const newItemPlaceName = newItemElement.querySelector('.element__place-name');
   newItemPlaceName.textContent = card.name;
   const newItemLikeButton = newItemElement.querySelector('.like-button');
   newItemLikeButton.addEventListener('click', handleLikeItem)
+  const newDeleteButton = newItemElement.querySelector('.delete-button')
+  newDeleteButton.addEventListener('click', handleDeleteItem)
+
   return newItemElement;
 }
 
@@ -56,7 +86,6 @@ initialCards.forEach(card => {
   renderItemAppend(itemCardsWrapper, card);
 })
 
-//тест
 
 // Функции открытия и закрытие Popup
 
@@ -75,7 +104,7 @@ const closePopup = evt => {
 
 // Редактирoвание профиля
 
-const popupEditProfile = document.querySelector('.popup-edit-profile');
+const popupEditProfile = document.querySelector('.popup_type_edit-profile');
 const editButton = document.querySelector('.edit-button');
 
 const formPersonName = popupEditProfile.querySelector('.popup__form-item_el_name');
@@ -90,7 +119,7 @@ editButton.addEventListener('click', evt => {
 });
 
 
-const popupFormEditProfile = document.querySelector('.popup-edit-profile .popup__form')
+const popupFormEditProfile = document.querySelector('.popup_type_edit-profile .popup__form')
 popupFormEditProfile.addEventListener('submit', evt => {
   evt.preventDefault();
   profilePersonName.textContent = formPersonName.value;
@@ -101,7 +130,7 @@ popupFormEditProfile.addEventListener('submit', evt => {
 
 // Добавление новой фотокарточки
 
-const popupAddCard = document.querySelector('.popup-add-card');
+const popupAddCard = document.querySelector('.popup_type_add-card');
 const addButton = document.querySelector('.add-button');
 
 const formPlaceName = popupAddCard.querySelector('.popup__form-item_el_place');
@@ -113,7 +142,7 @@ addButton.addEventListener('click', evt => {
   openForm(popupAddCard);
 });
 
-const popupFormAddCard = document.querySelector('.popup-add-card .popup__form')
+const popupFormAddCard = document.querySelector('.popup_type_add-card .popup__form')
 popupFormAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
   renderItemPrepend(itemCardsWrapper, ({name: formPlaceName.value, link: formLink.value}));
@@ -121,3 +150,5 @@ popupFormAddCard.addEventListener('submit', evt => {
   formLink.value = '';
   closePopup(evt)
 });
+
+

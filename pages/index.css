@@ -32,6 +32,7 @@
 @import url(../blocks/edit-button/edit-button.css);
 @import url(../blocks/like-button/like-button.css);
 @import url(../blocks/like-button/_active/like-button_active.css);
+@import url(../blocks/delete-button/delete-button.css);
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
@@ -45,3 +46,9 @@
 @import url(../blocks/popup/__form-item/_el_link/popup__form-item_el_link.css);
 @import url(../blocks/popup/__form-item/_el_place/popup__form-item_el_place.css);
 @import url(../blocks/popup/__form-save-button/popup__form-save-button.css);
+@import url(../blocks/popup/__container-card/popup__container-card.css);
+@import url(../blocks/popup/__card/popup__card.css);
+@import url(../blocks/popup/__card-name/popup__card-name.css);
+@import url(../blocks/popup/_type/popup_type_add-card.css);
+@import url(../blocks/popup/_type/popup_type_edit-profile.css);
+@import url(../blocks/popup/_type/popup_type_open-card.css);
