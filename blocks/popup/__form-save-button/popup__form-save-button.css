@@ -12,7 +12,7 @@
 }
 
 
-.popup__form-save-button :hover {
+.popup__form-save-button:hover {
   opacity: 0.8;
 }
 

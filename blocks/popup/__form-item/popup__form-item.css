@@ -15,3 +15,14 @@
   outline-color: transparent;
 }
 
+.popup__form-item::placeholder {
+  color: #C4C4C4;
+}
+
+.popup__form-item:first-child  {
+  margin-bottom: 30px;
+}
+
+.popup__form-item:nth-child(2) {
+  margin-bottom: 48px;
+}
