@@ -65,10 +65,10 @@ const handleDeleteItem = evt => {
 // Посмотреть фотографию на полный экран
 
 const handleViewPhoto = (card) => {
-  openPopup(popupViewCard);
   popupImg.src = card.link;
   popupImg.alt = `Фото ${card.name}`;
   popupImgName.textContent = card.name;
+  openPopup(popupViewCard);
 }
 
 // Создание карточки со слушателями
