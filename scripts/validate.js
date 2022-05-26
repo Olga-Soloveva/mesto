@@ -26,7 +26,7 @@ const checkInputValidity = (obj, formElement, inputElement) => {
 // Функция: проверить все поля формы на невалидность
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
+     return !inputElement.validity.valid;
   })
 };
 
@@ -47,7 +47,7 @@ const setEventListeners = (obj, formElement) => {
   const inputList = Array.from(formElement.querySelectorAll(`${obj['inputSelector']}`));
   const buttonElement = formElement.querySelector(`${obj['submitButtonSelector']}`);
 
-  toggleButtonState(obj, inputList, buttonElement);
+  toggleButtonState(obj, inputList, buttonElement); 
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {

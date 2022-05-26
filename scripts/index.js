@@ -122,12 +122,12 @@ const resetError = (popupObject) => {
   })
 }
 
-//Функция: активировать кнопку
+//Функция: деактивировать кнопку
 
-const activateButton = (popupObject) => {
+const deactivateButton = (popupObject) => {
   const buttonSubmit = popupObject.querySelector('.popup__button')
-  buttonSubmit.classList.remove('popup__button_disabled');
-  buttonSubmit.removeAttribute('disabled');
+  buttonSubmit.classList.add('popup__button_disabled');
+  buttonSubmit.setAttribute('disabled', 'true');
 }
 
 // Функции: установить слушатель события нажатия на кнопку Esc
@@ -149,17 +149,16 @@ const openPopup = popupObject => {
 
 const closePopup = popupObject => {
   popupObject.classList.remove('popup_opened');
-  resetError(popupObject);
   document.removeEventListener('keydown', pressButtonEsc);
 }
 
-// Функция: редактирoвать профиль
+// Обработка события для редактирoвания профиль
 
 buttonEditProfile.addEventListener('click', evt => {
   formPersonName.value = profilePersonName.textContent;
   formDescription.value = profileDescription.textContent;
+  resetError(popupEditProfile);
   openPopup(popupEditProfile);
-  activateButton(popupEditProfile);
 });
 
 popupFormEditProfile.addEventListener('submit', evt => {
@@ -169,11 +168,13 @@ popupFormEditProfile.addEventListener('submit', evt => {
   closePopup(popupEditProfile);
 });
 
-// Функция: добавить новые фотокарточки
+// Обработка событий для добавления новых фотокарточек
 
 buttonAddCard.addEventListener('click', evt => {
   popupFormAddCard.reset();
+  resetError(popupAddCard);
   openPopup(popupAddCard);
+  deactivateButton(popupAddCard);
 });
 
 popupFormAddCard.addEventListener('submit', evt => {
