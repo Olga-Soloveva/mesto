@@ -1,3 +1,5 @@
+import Card from './Card.js'
+
 const initialCards = [
   {
     name: 'Москва',
@@ -25,18 +27,12 @@ const initialCards = [
   }
 ];
 
-const template = document.querySelector('#template-photo');
-
 const itemCardsWrapper = document.querySelector('.elements');
 
 const profilePersonName = document.querySelector('.profile__person-name');
 const profileDescription = document.querySelector('.profile__description');
 
 const popupList = document.querySelectorAll('.popup');
-const popupViewCard = document.querySelector('.popup_type_open-card');
-const popupImg = popupViewCard.querySelector('.popup__card');
-const popupImgName = popupViewCard.querySelector('.popup__card-name');
-
 
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupFormAddCard = popupAddCard.querySelector('.popup__form');
@@ -52,61 +48,21 @@ const buttonEditProfile = document.querySelector('.edit-button');
 const buttonAddCard = document.querySelector('.add-button');
 const buttonsPopupClose = document.querySelectorAll('.popup__close');
 
-//Функция: поставить/убрать лайк у карточки
-
-const handleLikeItem = evt => {
-  evt.target.classList.toggle('like-button_active');
-}
-
-//Функция: удалить карточку
-
-const handleDeleteItem = evt => {
-  const deleteCard = evt.target.closest('.element');
-  deleteCard.remove();
-}
-
-// Функция: посмотреть фотографию на полный экран
-
-const handleViewPhoto = (card) => {
-  popupImg.src = card.link;
-  popupImg.alt = `Фото ${card.name}`;
-  popupImgName.textContent = card.name;
-  openPopup(popupViewCard);
-}
-
-// Функция: создать карточку со слушателями
-
-const getItemElement = card => {
-  const newItemElement = template.content.cloneNode(true);
-  const newItemPhoto = newItemElement.querySelector('.element__photo');
-  const newItemPlaceName = newItemElement.querySelector('.element__place-name');
-  const deleteButton = newItemElement.querySelector('.delete-button');
-  const likeButton = newItemElement.querySelector('.like-button');
-  newItemPhoto.src = card.link;
-  newItemPhoto.alt = `Фото ${card.name}`;
-  newItemPlaceName.textContent = card.name;
-  deleteButton.addEventListener('click', handleDeleteItem);
-  likeButton.addEventListener('click', handleLikeItem);
-  newItemPhoto.addEventListener('click', () => {
-    handleViewPhoto(card)
-  });
-  return newItemElement;
-}
-
 // Функция: рендерить карточки
 
 const renderItemAppend = (wrap, card) => {
-  wrap.append(getItemElement(card));
+  wrap.append(card.getItemElement());
 }
 
 const renderItemPrepend = (wrap, card) => {
-  wrap.prepend(getItemElement(card));
+  wrap.prepend(card.getItemElement());
 }
 
 // Произвести рендеринг карточек через входящий массив
 
-initialCards.forEach(card => {
-  renderItemAppend(itemCardsWrapper, card);
+initialCards.forEach(item => {
+  const newCard = new Card(item, '#template-photo')
+  renderItemAppend(itemCardsWrapper, newCard);
 })
 
 //Функция: сбросить ошибки
@@ -135,14 +91,13 @@ const deactivateButton = (popupObject) => {
 const pressButtonEsc = evt => {
   if (evt.key === 'Escape') {
     const popupOpen = document.querySelector('.popup_opened')
-    console.log('Нажали на Esc')
     closePopup(popupOpen)
  }
 }
 
 // Функции: открыть и закрыть Popup
 
-const openPopup = popupObject => {
+export const openPopup = popupObject => {
   popupObject.classList.add('popup_opened');
   document.addEventListener('keydown', pressButtonEsc);
 }
@@ -173,13 +128,14 @@ popupFormEditProfile.addEventListener('submit', evt => {
 buttonAddCard.addEventListener('click', evt => {
   popupFormAddCard.reset();
   resetError(popupAddCard);
-  openPopup(popupAddCard);
   deactivateButton(popupAddCard);
+  openPopup(popupAddCard);
 });
 
 popupFormAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
-  newCard = {name: formPlaceName.value, link: formLink.value}
+  const newCard = new Card( {name: formPlaceName.value, link: formLink.value}, '#template-photo')
+  // newCard = {name: formPlaceName.value, link: formLink.value}
   renderItemPrepend(itemCardsWrapper, newCard);
   closePopup(popupAddCard);
 });
@@ -201,4 +157,8 @@ popupList.forEach((popup) => {
     }
   })
 })
+
+function newFunction() {
+  test();
+}
 
