@@ -1,14 +1,14 @@
-import {openPopup} from './index.js'
-
-const popupViewCard = document.querySelector('.popup_type_open-card');
-const popupImg = popupViewCard.querySelector('.popup__card');
-const popupImgName = popupViewCard.querySelector('.popup__card-name');
-
 export default class Card {
-  constructor(card, cardSelector) {
+  constructor(card, cardSelector, handleCardClick) {
     this._name = card.name;
     this._link = card.link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
+    this._newItemElement = document.querySelector(this._cardSelector).content.cloneNode(true);
+    this._newItemPhoto = this._newItemElement.querySelector('.element__photo');
+    this._newItemPlaceName = this._newItemElement.querySelector('.element__place-name');
+    this._deleteButton = this._newItemElement.querySelector('.delete-button');
+    this._likeButton = this._newItemElement.querySelector('.like-button');
   }
 
   //Функция: поставить/убрать лайк у карточки
@@ -24,32 +24,25 @@ export default class Card {
     deleteCard.remove();
   }
 
-  // Функция: посмотреть фотографию на полный экран
+  // Функция: установить слушатели
 
-  _handleViewPhoto() {
-    popupImg.src = this._link;
-    popupImg.alt = `Фото ${this._name}`;
-    popupImgName.textContent = this._name;
-    openPopup(popupViewCard);
+  _setEventListeners() {
+    this._deleteButton.addEventListener('click', this._handleDeleteItem);
+    this._likeButton.addEventListener('click', this._handleLikeItem);
+    this._newItemPhoto.addEventListener('click', () => {
+      this._handleCardClick(this._name, this._link)
+    });
   }
 
   // Функция: создать карточку со слушателями
 
   getItemElement() {
-    const newItemElement = document.querySelector(this._cardSelector).content.cloneNode(true);
-    const newItemPhoto = newItemElement.querySelector('.element__photo');
-    const newItemPlaceName = newItemElement.querySelector('.element__place-name');
-    const deleteButton = newItemElement.querySelector('.delete-button');
-    const likeButton = newItemElement.querySelector('.like-button');
-    newItemPhoto.src = this._link;
-    newItemPhoto.alt = `Фото ${this._name}`;
-    newItemPlaceName.textContent = this._name;
-    deleteButton.addEventListener('click', this._handleDeleteItem);
-    likeButton.addEventListener('click', this._handleLikeItem);
-    newItemPhoto.addEventListener('click', () => {
-      this._handleViewPhoto()
-    });
-    return newItemElement;
+
+    this._newItemPhoto.src = this._link;
+    this._newItemPhoto.alt = `Фото ${this._name}`;
+    this._newItemPlaceName.textContent = this._name;
+    this._setEventListeners()
+    return this._newItemElement;
   }
 }
 

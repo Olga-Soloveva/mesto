@@ -35,6 +35,10 @@ const profileDescription = document.querySelector('.profile__description');
 
 const popupList = document.querySelectorAll('.popup');
 
+const popupViewCard = document.querySelector('.popup_type_open-card');
+const popupImg = popupViewCard.querySelector('.popup__card');
+const popupImgName = popupViewCard.querySelector('.popup__card-name');
+
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupFormAddCard = popupAddCard.querySelector('.popup__form');
 const formPlaceName = popupAddCard.querySelector('#place-input');
@@ -49,43 +53,30 @@ const buttonEditProfile = document.querySelector('.edit-button');
 const buttonAddCard = document.querySelector('.add-button');
 const buttonsPopupClose = document.querySelectorAll('.popup__close');
 
+// Функция: создать карточки
+
+function createCard(item) {
+  const newCard = new Card(item, '#template-photo', handleCardClick)
+  const cardElement = newCard.getItemElement()
+
+  return cardElement
+}
+
 // Функция: рендерить карточки
 
 const renderItemAppend = (wrap, card) => {
-  wrap.append(card.getItemElement());
+  wrap.append(card);
 }
 
 const renderItemPrepend = (wrap, card) => {
-  wrap.prepend(card.getItemElement());
+  wrap.prepend(card);
 }
 
 // Произвести рендеринг карточек через входящий массив
 
 initialCards.forEach(item => {
-  const newCard = new Card(item, '#template-photo')
-  renderItemAppend(itemCardsWrapper, newCard);
+  renderItemAppend(itemCardsWrapper, createCard(item));
 })
-
-//Функция: сбросить ошибки
-
-const resetError = (popupObject) => {
-  const errorList = Array.from(popupObject.querySelectorAll('.popup__error'))
-    errorList.forEach((errorElement) => {
-    errorElement.classList.remove('popup__error_visible');
-  })
-  const inputList = Array.from(popupObject.querySelectorAll('.popup__input'))
-  inputList.forEach((inputElement) => {
-    inputElement.classList.remove('popup__input_type_error');
-  })
-}
-
-//Функция: деактивировать кнопку
-
-const deactivateButton = (popupObject) => {
-  const buttonSubmit = popupObject.querySelector('.popup__button')
-  buttonSubmit.classList.add('popup__button_disabled');
-  buttonSubmit.setAttribute('disabled', 'true');
-}
 
 // Функции: установить слушатель события нажатия на кнопку Esc
 
@@ -108,12 +99,21 @@ const closePopup = popupObject => {
   document.removeEventListener('keydown', pressButtonEsc);
 }
 
+// Функция: посмотреть фотографию на полный экран
+
+function handleCardClick(name, link) {
+  popupImg.src = link;
+  popupImg.alt = `Фото ${name}`;
+  popupImgName.textContent = name;
+  openPopup(popupViewCard);
+}
+
 // Обработка события для редактирoвания профиль
 
 buttonEditProfile.addEventListener('click', evt => {
   formPersonName.value = profilePersonName.textContent;
   formDescription.value = profileDescription.textContent;
-  resetError(popupEditProfile);
+  formValidators['editprofile'].resetError()
   openPopup(popupEditProfile);
 });
 
@@ -128,16 +128,14 @@ popupFormEditProfile.addEventListener('submit', evt => {
 
 buttonAddCard.addEventListener('click', evt => {
   popupFormAddCard.reset();
-  resetError(popupAddCard);
-  deactivateButton(popupAddCard);
+  formValidators['addcard'].resetError()
+  formValidators['addcard'].deactivateButton();
   openPopup(popupAddCard);
 });
 
 popupFormAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
-  const newCard = new Card( {name: formPlaceName.value, link: formLink.value}, '#template-photo')
-  // newCard = {name: formPlaceName.value, link: formLink.value}
-  renderItemPrepend(itemCardsWrapper, newCard);
+  renderItemPrepend(itemCardsWrapper, createCard({name: formPlaceName.value, link: formLink.value}));
   closePopup(popupAddCard);
 });
 
@@ -151,6 +149,7 @@ buttonsPopupClose.forEach((button) => {
 });
 
 // Добавить слушатель на закрытие Popup по клику на Overlay
+
 popupList.forEach((popup) => {
   popup.addEventListener('mousedown', function (evt) {
     if (evt.target === evt.currentTarget) {
@@ -163,15 +162,27 @@ function newFunction() {
   test();
 }
 
-// Запустить валидацию
+// Запустить валидацию по всем формам (создать объект из всех форм валидации)
 
-const newValid = new FormValidator({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-})
+const formValidators = {}
 
-newValid.enableValidation()
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+
+    const formName = formElement.getAttribute('name')
+
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
