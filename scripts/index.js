@@ -3,6 +3,7 @@ import FormValidator from '../components/FormValidator.js'
 import Section from '../components/Section.js'
 import PopupWithForm from '../components/PopupWithForm.js'
 import PopupWithImage from '../components/PopupWithImage.js'
+import UserInfo from '../components/UserInfo.js'
 
 import {
   initialCards,
@@ -33,28 +34,29 @@ const initialCardList = new Section({
 
 initialCardList.renderItems();
 
-// Редактировать профиль
+// Функция: редактировать профиль
+
+const profileInfo = new UserInfo('.profile__person-name', '.profile__description')
 
 const popupEditProfile = new PopupWithForm('.popup_type_edit-profile',
   ({ nameinput, descriptioninput}) => {
-    profilePersonName.textContent = nameinput;
-    profileDescription.textContent = descriptioninput;
+    profileInfo.setUserInfo(nameinput, descriptioninput)
   }
 )
 
 popupEditProfile.setEventListeners()
 
 buttonEditProfile.addEventListener('click', () => {
-  formPersonName.value = profilePersonName.textContent;
-  formDescription.value = profileDescription.textContent;
+  const userData = profileInfo.getUserInfo()
+  formPersonName.value = userData['nameinput']
+  formDescription.value = userData['descriptioninput']
   formValidators['editprofile'].resetError();
   popupEditProfile.open();
-  console.log(popupEditProfile._popupObject)
 });
 
 
 
-// Добавить новую карточку
+// Функция: добавить новую карточку
 
 const popupAddCard = new PopupWithForm('.popup_type_add-card',
   ({ placeinput, linkinput }) => {
@@ -116,3 +118,4 @@ enableValidation({
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
   });
+
