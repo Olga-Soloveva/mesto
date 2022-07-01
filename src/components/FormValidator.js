@@ -1,20 +1,36 @@
 export default class FormValidator {
-  constructor( { formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass }, formElement) {
+  constructor(
+    {
+      formSelector,
+      inputSelector,
+      submitButtonSelector,
+      inactiveButtonClass,
+      inputErrorClass,
+      errorClass,
+    },
+    formElement
+  ) {
     this._formSelector = formSelector;
     this._inputSelector = inputSelector;
     this._submitButtonSelector = submitButtonSelector;
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
-    this._formElement = formElement
-    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
-    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+    this._formElement = formElement;
+    this._inputList = Array.from(
+      this._formElement.querySelectorAll(this._inputSelector)
+    );
+    this._buttonElement = this._formElement.querySelector(
+      this._submitButtonSelector
+    );
   }
 
   // Функция: показать элемент с текстом ошибки
 
   _showInputError(inputElement, errorMessage) {
-    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const errorElement = this._formElement.querySelector(
+      `.${inputElement.id}-error`
+    );
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._errorClass);
@@ -23,11 +39,13 @@ export default class FormValidator {
   // Функция: скрыть элемент с текстом ошибки
 
   _hideInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const errorElement = this._formElement.querySelector(
+      `.${inputElement.id}-error`
+    );
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
-    errorElement.textContent = '';
-  };
+    errorElement.textContent = "";
+  }
 
   // Функция: проверить валидность поля (в резльтате показать или скрыть элемент ошибки)
 
@@ -37,70 +55,72 @@ export default class FormValidator {
     } else {
       this._hideInputError(inputElement);
     }
-  };
+  }
 
   // Функция: проверить все поля формы на невалидность
 
   _hasInvalidInput() {
     return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
-    })
-  };
+    });
+  }
 
   //Функция: деактивировать кнопку
 
   deactivateButton() {
     this._buttonElement.classList.add(this._inactiveButtonClass);
-    this._buttonElement.setAttribute('disabled', 'true');
+    this._buttonElement.setAttribute("disabled", "true");
   }
 
   //Функция: активировать кнопку
 
   activateButton() {
     this._buttonElement.classList.remove(this._inactiveButtonClass);
-    this._buttonElement.removeAttribute('disabled');
+    this._buttonElement.removeAttribute("disabled");
   }
   // Функция: изменять статус кнопки (активная/неактивная)
 
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this.deactivateButton()
+      this.deactivateButton();
     } else {
-      this.activateButton()
+      this.activateButton();
     }
-  };
+  }
 
-//Функция: сбросить ошибки
+  //Функция: сбросить ошибки
 
   resetError() {
     this._toggleButtonState();
 
-    const errorList = Array.from(this._formElement.querySelectorAll('.popup__error'))
-      errorList.forEach((errorElement) => {
-      errorElement.classList.remove('popup__error_visible');
-    })
+    const errorList = Array.from(
+      this._formElement.querySelectorAll(".popup__error")
+    );
+    errorList.forEach((errorElement) => {
+      errorElement.classList.remove("popup__error_visible");
+    });
     this._inputList.forEach((inputElement) => {
-      inputElement.classList.remove('popup__input_type_error');
-    })
+      inputElement.classList.remove("popup__input_type_error");
+    });
   }
 
- // Функция: установить слушатель событий на элементы формы при инпуте
+  // Функция: установить слушатель событий на элементы формы при инпуте
 
   _setEventListeners() {
-     this._inputList.forEach((inputElement) => {
-      inputElement.addEventListener('input', () => {
-        this._checkInputValidity(inputElement)
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        this._checkInputValidity(inputElement);
         this._toggleButtonState();
       });
     });
-  };
+  }
 
   // Функция: запустить фалидацию
 
   enableValidation() {
-    this._formElement.addEventListener('submit', (evt) => {
+    this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
     this._setEventListeners();
-  };
+  }
 }

@@ -2,5 +2,4 @@
 
 export const renderItemPrepend = (wrap, card) => {
   wrap.prepend(card);
-}
-
+};
