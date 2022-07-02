@@ -29,35 +29,32 @@ export default class Card {
     deleteCard.remove();
   }
 
-  // Функция: установить слушатели
-
-  _setEventListeners() {
-    this._newItemElement
-      .querySelector(".delete-button")
-      .addEventListener("click", this._handleDeleteItem);
-    this._newItemElement
-      .querySelector(".like-button")
-      .addEventListener("click", this._handleLikeItem);
-    this._newItemElement
-      .querySelector(".element__photo")
-      .addEventListener("click", () => {
-        this._handleCardClick(this._name, this._link);
-      });
-  }
-
   // Функция: создать карточку со слушателями
 
   generateCard() {
     this._newItemElement = this._getTemplate();
+    this._newItemPhoto = this._newItemElement.querySelector(".element__photo");
+    this._newItemPlaceName = this._newItemElement.querySelector(".element__place-name")
 
-    this._newItemElement.querySelector(".element__photo").src = this._link;
-    this._newItemElement.querySelector(
-      ".element__photo"
-    ).alt = `Фото ${this._name}`;
-    this._newItemElement.querySelector(".element__place-name").textContent =
-      this._name;
+    this._newItemPhoto.src = this._link;
+    this._newItemPhoto.alt = `Фото ${this._name}`;
+    this._newItemPlaceName.textContent = this._name;
     this._setEventListeners();
 
     return this._newItemElement;
   }
+
+    // Функция: установить слушатели
+
+    _setEventListeners() {
+      this._deleteButton = this._newItemElement.querySelector(".delete-button")
+      this._likeButton = this._newItemElement.querySelector(".like-button")
+
+      this._deleteButton.addEventListener("click", this._handleDeleteItem);
+      this._likeButton.addEventListener("click", this._handleLikeItem);
+      this._newItemPhoto.addEventListener("click", () => {
+          this._handleCardClick(this._name, this._link);
+        });
+    }
+
 }

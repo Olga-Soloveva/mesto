@@ -1,41 +1,34 @@
-import "./pages/index.css";
+import "./index.css";
 
-import Card from "./components/Card.js";
-import FormValidator from "./components/FormValidator.js";
-import Section from "./components/Section.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import UserInfo from "./components/UserInfo.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 
 import {
   initialCards,
   cardListSelector,
   buttonEditProfile,
   buttonAddCard,
-  formPersonName,
-  formDescription,
-  itemCardsWrapper,
-  profilePersonName,
-  profileDescription,
-} from "./utils/constants.js";
-
-import { renderItemPrepend } from "./utils/utils.js";
+} from "../utils/constants.js";
 
 // Произвести рендеринг карточек через входящий массив
 
-const initialCardList = new Section(
+const CardList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item, "#template-photo", handleCardClick);
-      const cardElement = card.generateCard();
-      initialCardList.addItem(cardElement);
+      const newCard = new Card(item, "#template-photo", handleCardClick);
+      const cardItem = newCard.generateCard();
+      return cardItem;
     },
   },
   cardListSelector
 );
 
-initialCardList.renderItems();
+CardList.renderItems();
 
 // Функция: редактировать профиль
 
@@ -46,8 +39,8 @@ const profileInfo = new UserInfo(
 
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
-  ({ nameinput, descriptioninput }) => {
-    profileInfo.setUserInfo(nameinput, descriptioninput);
+  ({ nameInput, descriptionInput }) => {
+    profileInfo.setUserInfo(nameInput, descriptionInput);
   }
 );
 
@@ -55,8 +48,7 @@ popupEditProfile.setEventListeners();
 
 buttonEditProfile.addEventListener("click", () => {
   const userData = profileInfo.getUserInfo();
-  formPersonName.value = userData["nameinput"];
-  formDescription.value = userData["descriptioninput"];
+  popupEditProfile.setInputValues(userData);
   formValidators["editprofile"].resetError();
   popupEditProfile.open();
 });
@@ -66,10 +58,7 @@ buttonEditProfile.addEventListener("click", () => {
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   ({ placeinput, linkinput }) => {
-    renderItemPrepend(
-      itemCardsWrapper,
-      createCard({ name: placeinput, link: linkinput })
-    );
+    CardList.prependItem({ name: placeinput, link: linkinput });
   }
 );
 popupAddCard.setEventListeners();
@@ -79,14 +68,6 @@ buttonAddCard.addEventListener("click", (evt) => {
   formValidators["addcard"].deactivateButton();
   popupAddCard.open();
 });
-
-// Функция: создать карточку
-
-function createCard(item) {
-  const newCard = new Card(item, "#template-photo", handleCardClick);
-  const cardElement = newCard.generateCard();
-  return cardElement;
-}
 
 // Функция: открыть Popup по клику на карточку (посмотреть фотографию на полный экран)
 

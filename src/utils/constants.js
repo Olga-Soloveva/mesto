@@ -29,19 +29,3 @@ export const cardListSelector = ".elements";
 
 export const buttonEditProfile = document.querySelector(".edit-button");
 export const buttonAddCard = document.querySelector(".add-button");
-
-export const formPersonName = document.querySelector(
-  ".popup_type_edit-profile #name-input"
-);
-export const formDescription = document.querySelector(
-  ".popup_type_edit-profile #description-input"
-);
-
-export const itemCardsWrapper = document.querySelector(".elements");
-
-export const profilePersonName = document.querySelector(
-  ".profile__person-name"
-);
-export const profileDescription = document.querySelector(
-  ".profile__description"
-);

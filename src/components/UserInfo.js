@@ -13,10 +13,8 @@ export default class UserInfo {
     return profileInfo;
   }
 
-  // Содержит публичный метод setUserInfo, который принимает новые данные пользователя и добавляет их на страницу.
-
-  setUserInfo = (nameinput, descriptioninput) => {
-    this._profilePersonName.textContent = nameinput;
-    this._profileDescription.textContent = descriptioninput;
+  setUserInfo = (nameInput, descriptionInput) => {
+    this._profilePersonName.textContent = nameInput;
+    this._profileDescription.textContent = descriptionInput;
   };
 }

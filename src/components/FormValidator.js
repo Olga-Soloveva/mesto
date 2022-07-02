@@ -93,14 +93,8 @@ export default class FormValidator {
   resetError() {
     this._toggleButtonState();
 
-    const errorList = Array.from(
-      this._formElement.querySelectorAll(".popup__error")
-    );
-    errorList.forEach((errorElement) => {
-      errorElement.classList.remove("popup__error_visible");
-    });
     this._inputList.forEach((inputElement) => {
-      inputElement.classList.remove("popup__input_type_error");
+      this._hideInputError(inputElement);
     });
   }
 
