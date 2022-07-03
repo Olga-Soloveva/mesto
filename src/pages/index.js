@@ -16,7 +16,7 @@ import {
 
 // Произвести рендеринг карточек через входящий массив
 
-const CardList = new Section(
+const cardList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
@@ -28,7 +28,7 @@ const CardList = new Section(
   cardListSelector
 );
 
-CardList.renderItems();
+cardList.renderItems();
 
 // Функция: редактировать профиль
 
@@ -39,8 +39,8 @@ const profileInfo = new UserInfo(
 
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
-  ({ nameInput, descriptionInput }) => {
-    profileInfo.setUserInfo(nameInput, descriptionInput);
+  ({ nameinput, descriptioninput }) => {
+    profileInfo.setUserInfo(nameinput, descriptioninput);
   }
 );
 
@@ -58,7 +58,7 @@ buttonEditProfile.addEventListener("click", () => {
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   ({ placeinput, linkinput }) => {
-    CardList.prependItem({ name: placeinput, link: linkinput });
+    cardList.prependItem({ name: placeinput, link: linkinput });
   }
 );
 popupAddCard.setEventListeners();
