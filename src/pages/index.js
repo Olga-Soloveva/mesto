@@ -3,24 +3,39 @@ import "./index.css";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import popupConfirmAction from "../components/PopupConfirmAction.js"
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 
 import {
-  initialCards,
   cardListSelector,
   buttonEditProfile,
   buttonAddCard,
+  options,
 } from "../utils/constants.js";
 
-// Произвести рендеринг карточек через входящий массив
+// Создать экземпляры классов: информация о пользователе, лист карточек
+
+const profileInfo = new UserInfo(
+  ".profile__person-name",
+  ".profile__description",
+  ".profile__avatar"
+);
 
 const cardList = new Section(
   {
-    items: initialCards,
-    renderer: (item) => {
-      const newCard = new Card(item, "#template-photo", handleCardClick);
+    items: [],
+    renderer: ({ item, owner }) => {
+      const newCard = new Card(
+        item,
+        owner,
+        "#template-photo",
+        handleCardClick,
+        handleConfirmAction
+      );
       const cardItem = newCard.generateCard();
       return cardItem;
     },
@@ -28,37 +43,63 @@ const cardList = new Section(
   cardListSelector
 );
 
-cardList.renderItems();
+// Загрузить данные с сервера и отрендерить: информация о пользователе, лист карточек
+
+const api = new Api(options);
+
+const firstPromise = api.getUserInfo();
+const secondPromise = api.getInitialCards();
+
+const promises = [firstPromise, secondPromise];
+
+Promise.all(promises).then((results) => {
+  profileInfo.renderUserInfo(results[0]);
+  const userId = results[0]._id;
+
+  results[1].forEach((item) => {
+    let owner;
+    if (item.owner._id === userId) {
+      owner = true;
+    } else {
+      owner = false;
+    }
+    cardList.addItem({ item, owner });
+  });
+});
 
 // Функция: редактировать профиль
 
-const profileInfo = new UserInfo(
-  ".profile__person-name",
-  ".profile__description"
-);
-
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
-  ({ nameinput, descriptioninput }) => {
-    profileInfo.setUserInfo(nameinput, descriptioninput);
+  ({ nameInput, descriptionInput }) => {
+    api.editUserInfo({ nameInput, descriptionInput }).then((res) => {
+      profileInfo.setUserInfo(res);
+    });
   }
 );
 
 popupEditProfile.setEventListeners();
 
 buttonEditProfile.addEventListener("click", () => {
-  const userData = profileInfo.getUserInfo();
-  popupEditProfile.setInputValues(userData);
-  formValidators["editprofile"].resetError();
-  popupEditProfile.open();
+  api.getUserInfo().then((res) => {
+    const userData = profileInfo.getUserInfo(res);
+    popupEditProfile.setInputValues(userData);
+    formValidators["editprofile"].resetError();
+    popupEditProfile.open();
+  });
 });
 
 // Функция: добавить новую карточку
 
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
-  ({ placeinput, linkinput }) => {
-    cardList.prependItem({ name: placeinput, link: linkinput });
+  ({ placeInput, linkInput }) => {
+    api.sendCardInfo({ placeInput, linkInput }).then((res) => {
+      cardList.prependItem({
+        item: { name: res.name, link: res.link, likes: [], _id: res._id },
+        owner: true,
+      });
+    });
   }
 );
 popupAddCard.setEventListeners();
@@ -77,6 +118,25 @@ popupOpenCard.setEventListeners();
 
 function handleCardClick(name, link) {
   popupOpenCard.open(name, link);
+}
+
+// Функция: открыть Popup для подтверждения действия удаления карточки
+
+
+const popupConfirmDeleteCard = new popupConfirmAction(".popup_type_confirm", deleteCard);
+
+popupConfirmDeleteCard.setEventListeners();
+
+function handleConfirmAction(data) {
+  popupConfirmDeleteCard.open(data);
+}
+
+function deleteCard(data) {
+  api.deleteCardInfo({ cardId: data.id }).then((res) => {
+    if (res) {
+      data.remove();
+    }
+  });
 }
 
 // Создать объект из всех форм валидации (экземпляры классов с свойствами и методами)
@@ -106,3 +166,6 @@ enableValidation({
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 });
+
+//УДАЛИТЬ
+// api.getUserInfo2();

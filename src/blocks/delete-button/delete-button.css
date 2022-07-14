@@ -1,4 +1,6 @@
-.delete-button{
+.delete-button {
+  visibility: hidden;
+  opacity: 0;
   background-color: transparent;
   border: 0;
   padding: 0;
