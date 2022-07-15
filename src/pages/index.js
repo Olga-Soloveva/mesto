@@ -3,10 +3,9 @@ import "./index.css";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
-import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
-import popupConfirmAction from "../components/PopupConfirmAction.js"
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 
@@ -14,6 +13,7 @@ import {
   cardListSelector,
   buttonEditProfile,
   buttonAddCard,
+  buttonEditAvatar,
   options,
 } from "../utils/constants.js";
 
@@ -25,16 +25,20 @@ const profileInfo = new UserInfo(
   ".profile__avatar"
 );
 
+profileInfo.setEventListeners();
+
 const cardList = new Section(
   {
     items: [],
-    renderer: ({ item, owner }) => {
+    renderer: ({ item, owner, like }) => {
       const newCard = new Card(
         item,
         owner,
+        like,
         "#template-photo",
         handleCardClick,
-        handleConfirmAction
+        handleDeleteBtn,
+        handleLikeBtn
       );
       const cardItem = newCard.generateCard();
       return cardItem;
@@ -57,13 +61,19 @@ Promise.all(promises).then((results) => {
   const userId = results[0]._id;
 
   results[1].forEach((item) => {
-    let owner;
-    if (item.owner._id === userId) {
-      owner = true;
+    const owner = item.owner._id === userId ? true : false;
+    const likesList = item.likes;
+    let like;
+
+    if (likesList.length !== 0) {
+      likesList.forEach((item) => {
+        like = item._id === userId ? true : false;
+      });
     } else {
-      owner = false;
+      like = false;
     }
-    cardList.addItem({ item, owner });
+
+    cardList.addItem({ item, owner, like });
   });
 });
 
@@ -74,7 +84,9 @@ const popupEditProfile = new PopupWithForm(
   ({ nameInput, descriptionInput }) => {
     api.editUserInfo({ nameInput, descriptionInput }).then((res) => {
       profileInfo.setUserInfo(res);
+      popupEditProfile.editTextBtn()
     });
+
   }
 );
 
@@ -89,6 +101,25 @@ buttonEditProfile.addEventListener("click", () => {
   });
 });
 
+// Функция: изменить аватар профиль
+
+const popupEditAvatar = new PopupWithForm(
+  ".popup_type_edit-avatar",
+  ({ avatarInput }) => {
+    api.editAvatarInfo({ avatarInput }).then((res) => {
+      profileInfo.setAvatarInfo(res);
+      popupEditAvatar.editTextBtn()
+    });
+  }
+);
+
+popupEditAvatar.setEventListeners();
+
+buttonEditAvatar.addEventListener("click", () => {
+  formValidators["editavatar"].resetError();
+  popupEditAvatar.open();
+});
+
 // Функция: добавить новую карточку
 
 const popupAddCard = new PopupWithForm(
@@ -98,10 +129,13 @@ const popupAddCard = new PopupWithForm(
       cardList.prependItem({
         item: { name: res.name, link: res.link, likes: [], _id: res._id },
         owner: true,
+        like: false,
       });
+      popupAddCard.editTextBtn()
     });
-  }
+   }
 );
+
 popupAddCard.setEventListeners();
 
 buttonAddCard.addEventListener("click", (evt) => {
@@ -122,21 +156,45 @@ function handleCardClick(name, link) {
 
 // Функция: открыть Popup для подтверждения действия удаления карточки
 
-
-const popupConfirmDeleteCard = new popupConfirmAction(".popup_type_confirm", deleteCard);
+const popupConfirmDeleteCard = new PopupWithConfirmation(
+  ".popup_type_confirm",
+  deleteCard
+);
 
 popupConfirmDeleteCard.setEventListeners();
 
-function handleConfirmAction(data) {
+function handleDeleteBtn(data) {
   popupConfirmDeleteCard.open(data);
 }
 
+// Функция: удалить карточку с сервера и на странице
+
 function deleteCard(data) {
-  api.deleteCardInfo({ cardId: data.id }).then((res) => {
+  api.deleteCard({ cardId: data.id }).then((res) => {
     if (res) {
       data.remove();
     }
   });
+}
+
+// Функция: поставить/убрать лайк с сервера и на странице
+
+function handleLikeBtn(data) {
+  const likeBtn = data.querySelector(".like-button");
+  const likeStatus = likeBtn.classList.contains("like-button_active");
+  const likeCount = data.querySelector(".element__like-counter");
+
+  if (likeStatus) {
+    api.deleteLike({ cardId: data.id }).then((res) => {
+      likeCount.textContent = res.likes.length;
+      likeBtn.classList.remove("like-button_active");
+    });
+  } else {
+    api.likeCard({ cardId: data.id }).then((res) => {
+      likeCount.textContent = res.likes.length;
+      likeBtn.classList.add("like-button_active");
+    });
+  }
 }
 
 // Создать объект из всех форм валидации (экземпляры классов с свойствами и методами)

@@ -48,6 +48,30 @@ export default class Api {
       });
   }
 
+  editAvatarInfo({ avatarInput }) {
+    return fetch(`${this._url}/users/me/avatar`, {
+      method: "PATCH",
+      headers: {
+        authorization: this._authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        avatar: avatarInput,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(
+          `Ошибка при изменении аватара пользователя: ${res.status}`
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
@@ -92,7 +116,7 @@ export default class Api {
       });
   }
 
-  deleteCardInfo({ cardId }) {
+  deleteCard({ cardId }) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
@@ -112,6 +136,45 @@ export default class Api {
       });
   }
 
+  likeCard({ cardId }) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
+      method: "PUT",
+      headers: {
+        authorization: this._authorization,
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(
+          `Ошибка при попытке поставить лайк карточке: ${res.status}`
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  deleteLike({ cardId }) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._authorization,
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(
+          `Ошибка при попытке удалить лайк у карточки: ${res.status}`
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   //УДАЛИТЬ
   getUserInfo2() {
     return fetch(`${this._url}/users`, {
