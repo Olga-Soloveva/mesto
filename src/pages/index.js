@@ -84,9 +84,8 @@ const popupEditProfile = new PopupWithForm(
   ({ nameInput, descriptionInput }) => {
     api.editUserInfo({ nameInput, descriptionInput }).then((res) => {
       profileInfo.setUserInfo(res);
-      popupEditProfile.editTextBtn()
+      popupEditProfile.editTextBtn();
     });
-
   }
 );
 
@@ -108,7 +107,7 @@ const popupEditAvatar = new PopupWithForm(
   ({ avatarInput }) => {
     api.editAvatarInfo({ avatarInput }).then((res) => {
       profileInfo.setAvatarInfo(res);
-      popupEditAvatar.editTextBtn()
+      popupEditAvatar.editTextBtn();
     });
   }
 );
@@ -131,9 +130,9 @@ const popupAddCard = new PopupWithForm(
         owner: true,
         like: false,
       });
-      popupAddCard.editTextBtn()
+      popupAddCard.editTextBtn();
     });
-   }
+  }
 );
 
 popupAddCard.setEventListeners();
@@ -224,6 +223,3 @@ enableValidation({
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 });
-
-//УДАЛИТЬ
-// api.getUserInfo2();
