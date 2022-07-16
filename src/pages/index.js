@@ -56,48 +56,65 @@ const secondPromise = api.getInitialCards();
 
 const promises = [firstPromise, secondPromise];
 
-Promise.all(promises).then((results) => {
-  profileInfo.renderUserInfo(results[0]);
-  const userId = results[0]._id;
+Promise.all(promises)
+  .then((results) => {
+    profileInfo.renderUserInfo(results[0]);
+    const userId = results[0]._id;
 
-  results[1].forEach((item) => {
-    const owner = item.owner._id === userId ? true : false;
-    const likesList = item.likes;
-    let like;
+    results[1].forEach((item) => {
+      const owner = item.owner._id === userId ? true : false;
+      const likesList = item.likes;
+      let like;
 
-    if (likesList.length !== 0) {
-      likesList.forEach((item) => {
-        like = item._id === userId ? true : false;
-      });
-    } else {
-      like = false;
-    }
+      if (likesList.length !== 0) {
+        likesList.forEach((item) => {
+          like = item._id === userId ? true : false;
+        });
+      } else {
+        like = false;
+      }
 
-    cardList.addItem({ item, owner, like });
+      cardList.addItem({ item, owner, like });
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
 
 // Функция: редактировать профиль
 
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
   ({ nameInput, descriptionInput }) => {
-    api.editUserInfo({ nameInput, descriptionInput }).then((res) => {
-      profileInfo.setUserInfo(res);
-      popupEditProfile.editTextBtn();
-    });
+    api
+      .editUserInfo({ nameInput, descriptionInput })
+      .then((res) => {
+        profileInfo.setUserInfo(res);
+        popupEditProfile.close();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupEditProfile.editTextBtn();
+      });
   }
 );
 
 popupEditProfile.setEventListeners();
 
 buttonEditProfile.addEventListener("click", () => {
-  api.getUserInfo().then((res) => {
-    const userData = profileInfo.getUserInfo(res);
-    popupEditProfile.setInputValues(userData);
-    formValidators["editprofile"].resetError();
-    popupEditProfile.open();
-  });
+  api
+    .getUserInfo()
+    .then((res) => {
+      const userData = profileInfo.getUserInfo(res);
+      popupEditProfile.setInputValues(userData);
+      formValidators["editprofile"].resetError();
+      popupEditProfile.open();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 // Функция: изменить аватар профиль
@@ -105,10 +122,18 @@ buttonEditProfile.addEventListener("click", () => {
 const popupEditAvatar = new PopupWithForm(
   ".popup_type_edit-avatar",
   ({ avatarInput }) => {
-    api.editAvatarInfo({ avatarInput }).then((res) => {
-      profileInfo.setAvatarInfo(res);
-      popupEditAvatar.editTextBtn();
-    });
+    api
+      .editAvatarInfo({ avatarInput })
+      .then((res) => {
+        profileInfo.setAvatarInfo(res);
+        popupEditAvatar.close();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupEditAvatar.editTextBtn();
+      });
   }
 );
 
@@ -124,14 +149,22 @@ buttonEditAvatar.addEventListener("click", () => {
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   ({ placeInput, linkInput }) => {
-    api.sendCardInfo({ placeInput, linkInput }).then((res) => {
-      cardList.prependItem({
-        item: { name: res.name, link: res.link, likes: [], _id: res._id },
-        owner: true,
-        like: false,
+    api
+      .sendCardInfo({ placeInput, linkInput })
+      .then((res) => {
+        cardList.prependItem({
+          item: { name: res.name, link: res.link, likes: [], _id: res._id },
+          owner: true,
+          like: false,
+        });
+        popupAddCard.close();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupAddCard.editTextBtn();
       });
-      popupAddCard.editTextBtn();
-    });
   }
 );
 
@@ -169,11 +202,17 @@ function handleDeleteBtn(data) {
 // Функция: удалить карточку с сервера и на странице
 
 function deleteCard(data) {
-  api.deleteCard({ cardId: data.id }).then((res) => {
-    if (res) {
-      data.remove();
-    }
-  });
+  api
+    .deleteCard({ cardId: data.id })
+    .then((res) => {
+      if (res) {
+        popupConfirmDeleteCard.close();
+        data.remove();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 // Функция: поставить/убрать лайк с сервера и на странице
@@ -184,15 +223,25 @@ function handleLikeBtn(data) {
   const likeCount = data.querySelector(".element__like-counter");
 
   if (likeStatus) {
-    api.deleteLike({ cardId: data.id }).then((res) => {
-      likeCount.textContent = res.likes.length;
-      likeBtn.classList.remove("like-button_active");
-    });
+    api
+      .deleteLike({ cardId: data.id })
+      .then((res) => {
+        likeCount.textContent = res.likes.length;
+        likeBtn.classList.remove("like-button_active");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } else {
-    api.likeCard({ cardId: data.id }).then((res) => {
-      likeCount.textContent = res.likes.length;
-      likeBtn.classList.add("like-button_active");
-    });
+    api
+      .likeCard({ cardId: data.id })
+      .then((res) => {
+        likeCount.textContent = res.likes.length;
+        likeBtn.classList.add("like-button_active");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

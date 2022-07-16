@@ -4,23 +4,19 @@ export default class Api {
     this._authorization = options.authorization;
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: this._authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при загрузке данных пользователя на сервер: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   editUserInfo({ nameInput, descriptionInput }) {
@@ -34,18 +30,7 @@ export default class Api {
         name: nameInput,
         about: descriptionInput,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при изменении информации пользователя: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   editAvatarInfo({ avatarInput }) {
@@ -58,18 +43,7 @@ export default class Api {
       body: JSON.stringify({
         avatar: avatarInput,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при изменении аватара пользователя: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   getInitialCards() {
@@ -77,18 +51,7 @@ export default class Api {
       headers: {
         authorization: this._authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при загрузке массива карточек: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   sendCardInfo({ placeInput, linkInput }) {
@@ -102,18 +65,7 @@ export default class Api {
         name: placeInput,
         link: linkInput,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при загрузке данных карточки на сервер: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   deleteCard({ cardId }) {
@@ -122,18 +74,7 @@ export default class Api {
       headers: {
         authorization: this._authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при попытке удаления карточки c сервера: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   likeCard({ cardId }) {
@@ -142,18 +83,7 @@ export default class Api {
       headers: {
         authorization: this._authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при попытке поставить лайк карточке: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 
   deleteLike({ cardId }) {
@@ -162,17 +92,6 @@ export default class Api {
       headers: {
         authorization: this._authorization,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `Ошибка при попытке удалить лайк у карточки: ${res.status}`
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._checkResponse);
   }
 }
