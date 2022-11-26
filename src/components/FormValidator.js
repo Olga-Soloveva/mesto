@@ -25,8 +25,6 @@ export default class FormValidator {
     );
   }
 
-  // Функция: показать элемент с текстом ошибки
-
   _showInputError(inputElement, errorMessage) {
     const errorElement = this._formElement.querySelector(
       `.${inputElement.id}-error`
@@ -35,8 +33,6 @@ export default class FormValidator {
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._errorClass);
   }
-
-  // Функция: скрыть элемент с текстом ошибки
 
   _hideInputError(inputElement) {
     const errorElement = this._formElement.querySelector(
@@ -47,8 +43,6 @@ export default class FormValidator {
     errorElement.textContent = "";
   }
 
-  // Функция: проверить валидность поля (в резльтате показать или скрыть элемент ошибки)
-
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
@@ -57,28 +51,21 @@ export default class FormValidator {
     }
   }
 
-  // Функция: проверить все поля формы на невалидность
-
   _hasInvalidInput() {
     return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     });
   }
 
-  //Функция: деактивировать кнопку
-
   deactivateButton() {
     this._buttonElement.classList.add(this._inactiveButtonClass);
     this._buttonElement.setAttribute("disabled", "true");
   }
 
-  //Функция: активировать кнопку
-
   activateButton() {
     this._buttonElement.classList.remove(this._inactiveButtonClass);
     this._buttonElement.removeAttribute("disabled");
   }
-  // Функция: изменять статус кнопки (активная/неактивная)
 
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
@@ -88,8 +75,6 @@ export default class FormValidator {
     }
   }
 
-  //Функция: сбросить ошибки
-
   resetError() {
     this._toggleButtonState();
 
@@ -97,8 +82,6 @@ export default class FormValidator {
       this._hideInputError(inputElement);
     });
   }
-
-  // Функция: установить слушатель событий на элементы формы при инпуте
 
   _setEventListeners() {
     this._inputList.forEach((inputElement) => {
@@ -108,8 +91,6 @@ export default class FormValidator {
       });
     });
   }
-
-  // Функция: запустить фалидацию
 
   enableValidation() {
     this._formElement.addEventListener("submit", (evt) => {

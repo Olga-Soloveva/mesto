@@ -20,17 +20,13 @@ export default class Card {
     this._handleLikeBtn = handleLikeBtn;
   }
 
-  // Функция: клонировать темплейт
-
-  _getTemplate() {
+   _getTemplate() {
     const cardTemplate = document
       .querySelector(this._cardSelector)
       .content.cloneNode(true);
 
     return cardTemplate;
   }
-
-  // Функция: создать карточку со слушателями
 
   generateCard() {
     this._card = this._getTemplate();
@@ -58,8 +54,6 @@ export default class Card {
 
     return this._card;
   }
-
-  // Функция: установить слушатели
 
   _setEventListeners() {
     this._deleteBtn.addEventListener("click", (evt) => {
